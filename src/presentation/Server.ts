@@ -20,6 +20,11 @@ export class Server {
 
   // run server
   async start() {
+
+    //Middlewares
+    this.app.use(express.json());// raw 
+    this.app.use(express.urlencoded({extended:true})); //www-FormUrlEncode
+
     //routes
     this.app.use(this.routes)
 
