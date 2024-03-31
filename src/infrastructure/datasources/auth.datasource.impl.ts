@@ -31,9 +31,11 @@ export class AuthDatasourceImpl implements AuthDatasource {
         password: this.hashPassword(password),
       });
 
+      // creamos usuario
       await user.save();
 
       return UserMapper.userEntityFromObject(user);
+      
     } catch (error) {
       if (error instanceof CustomError) {
         throw error;
