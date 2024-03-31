@@ -1,28 +1,45 @@
+import { BcryptAdapter } from "../../config";
+import { UserModel } from "../../data/mongodb/index";
 import {
   AuthDatasource,
   RegisterUserDto,
   UserEntity,
-  CustumError,
+  CustomError,
 } from "../../domain";
+import { UserMapper } from "../mappers/user.mapper";
+
+// TYPE FUNCTIONS
+type HashFunction = (password: string) => string;
+type CompareFunction = (password: string, hash: string) => boolean;
 
 export class AuthDatasourceImpl implements AuthDatasource {
+  constructor(
+    // inyeccion de funciones como dependencia
+    private readonly hashPassword: HashFunction = BcryptAdapter.hash,
+    private readonly comparePassword: CompareFunction = BcryptAdapter.compare
+  ) {}
   async register(registerUserDto: RegisterUserDto): Promise<UserEntity> {
     const { email, name, password } = registerUserDto;
 
     try {
       // verificar si el correo existe
+      const emailExist = await UserModel.findOne({ email });
+      if (emailExist) throw CustomError.badRequest("Credentials not validate");
+      const user = await UserModel.create({
+        name: name,
+        email: email,
+        password: this.hashPassword(password),
+      });
 
-      //   HASH de contrasenia
+      await user.save();
 
-      //   mapeo de repuesta de nuesta entidad
-
-      return new UserEntity("1", name, email, password, ["ROLE_ADMIN"]);
+      return UserMapper.userEntityFromObject(user);
     } catch (error) {
-      if (error instanceof CustumError) {
+      if (error instanceof CustomError) {
         throw error;
       }
 
-      throw CustumError.internalServer();
+      throw CustomError.internalServer();
     }
   }
 }

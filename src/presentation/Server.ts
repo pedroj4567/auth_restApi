@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import { morganConfig } from "../config/morganConfig";
+import { MonganAdapter } from "../config";
 interface Options {
   port?: number;
   routes: Router;
@@ -14,7 +14,7 @@ export class Server {
     const { port = 3100, routes } = options;
     this.port = port;
     this.routes = routes;
-    this.app.use(morganConfig)
+    this.app.use(MonganAdapter.morgan())
 
   }
 
