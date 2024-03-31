@@ -28,7 +28,7 @@ Para iniciarlizar este servicio, necesitas inyectar las siguientes variables de 
 Clona el proyecto
 
 ```bash
-  git clone https://github.com/pedroj4567/auth_restApi.git
+  git clone https://github.com/pedroj4567/auth_restapi_cleanCode.git
 ```
 
 Ir al directorio del proyecto
@@ -37,7 +37,15 @@ Ir al directorio del proyecto
   cd auth_restApi
 ```
 
-Instalar dependencias
+Correr el docker compose para inicar la bd de mongo en local.
+Abrir una terminal y colocar el siguiente comando:
+
+```bash
+  docker compose up
+```
+
+En otra terminal 
+Instalamos nuestras dependencias
 
 ```bash
   npm install
@@ -48,4 +56,3 @@ Arrancar el servidor
 ```bash
   npm run dev
 ```
-
