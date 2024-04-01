@@ -1,11 +1,8 @@
-import { RegisterUserDto } from "../dtos/auth/register-user.dto";
+import { LoginUserDto, RegisterUserDto} from "..";
 import { UserEntity } from "../entities/user.entity";
 
-
 export abstract class AuthDatasource {
+  abstract login( loginUserDto: LoginUserDto): Promise<UserEntity>;
 
-
-    // TODO : ABSTRACT LOGIN()
-
-    abstract register( registerUserDto: RegisterUserDto ):Promise<UserEntity>
+  abstract register(registerUserDto: RegisterUserDto): Promise<UserEntity>;
 }
