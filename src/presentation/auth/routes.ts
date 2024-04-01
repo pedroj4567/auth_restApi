@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { AuthController } from "./controller";
 import { AuthDatasourceImpl, AuthRepositoryImpl } from "../../infrastructure";
+import { AuthMiddleware } from "./middlewares";
 export class AuthRoutes {
   static get routes(): Router {
     const router = Router();
@@ -13,11 +14,13 @@ export class AuthRoutes {
     /**
      * CONTROLLER METHODS
      */
-    const { loginUser, registerUser } = new AuthController(authRepository);
+    const { loginUser, registerUser,getUsers } = new AuthController(authRepository);
 
     router.post("/login", loginUser);
 
     router.post("/register", registerUser);
+
+    router.get('/users', [AuthMiddleware.validateJwt] ,getUsers)
 
     return router;
   }
